@@ -1,24 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
+import ShoppingList from "./ShoppingList";
+import itemData from "../data/items";
 
-function Item({ name, category }) {
-  const [isInCart, setIsInCart] = useState(false);
+class App extends React.Component {
+  state = {
+    items: itemData,
+    isDarkMode: false,
+  };
 
-  function handleAddToCartClick() {
-    setIsInCart((isInCart) => !isInCart);
+  handleDarkModeClick = () => {
+    this.setState((prevState) => ({
+      isDarkMode: !prevState.isDarkMode,
+    }));
+  };
+
+  render() {
+    return (
+      <div className={"App " + (this.state.isDarkMode ? "dark" : "light")}>
+        <header>
+          <h2>Shopster</h2>
+          <button onClick={this.handleDarkModeClick}>
+            {this.state.isDarkMode ? "Dark" : "Light"} Mode
+          </button>
+        </header>
+        <ShoppingList items={this.state.items} />
+      </div>
+    );
   }
-
-  return (
-    <li className={isInCart ? "in-cart" : ""}>
-      <span>{name}</span>
-      <span className="category">{category}</span>
-      <button
-        className={isInCart ? "remove" : "add"}
-        onClick={handleAddToCartClick}
-      >
-        {isInCart ? "Remove From" : "Add to"} Cart
-      </button>
-    </li>
-  );
 }
 
-export default Item;
+export default App;
